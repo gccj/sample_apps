@@ -1,5 +1,6 @@
 <% provide(:title, @user.name) %>
 <div class="row">
+  <%= render partial: "notification_summary", collection: @recent_unread_notification_summaries %>
   <aside class="col-md-4">
     <section class="user_info">
       <h1>

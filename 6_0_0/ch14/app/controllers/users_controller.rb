@@ -11,6 +11,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @microposts = @user.microposts.paginate(page: params[:page])
+    @recent_unread_notification_summaries = @user.recent_unread_notification_summaries
   end
 
   def new
