@@ -86,9 +86,26 @@ class User < ApplicationRecord
                      OR user_id = :user_id", user_id: id)
   end
 
+  def all_unread_notifications
+    # notification indexページ用
+    notifications = []
+    notifications += RelationshipNotification.all_unread_notifications(destination_id: id)
+    # 複数種類の通知がある場合
+    # notifications += OtherNotification.all_unread_notifications(destination_id: id)
+    return notifications
+  end
+
+  def recent_unread_notification_summaries
+    summaries = []
+    summaries << RelationshipNotification.recent_summary(destination_id: id)
+    summaries.compact!
+    return summaries
+  end
+
   # ユーザーをフォローする
   def follow(other_user)
     following << other_user
+    RelationshipNotification.create_notification(source_id: id, destination_id: other_user.id)
   end
 
   # ユーザーをフォロー解除する
