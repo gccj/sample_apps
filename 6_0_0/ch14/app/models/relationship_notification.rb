@@ -1,4 +1,5 @@
 class RelationshipNotification < ApplicationRecord
+  # Notification duck typing
   belongs_to :source, class_name: 'User', foreign_key: 'source_id'
   belongs_to :destination, class_name: 'User', foreign_key: 'destination_id'
 
@@ -8,12 +9,14 @@ class RelationshipNotification < ApplicationRecord
     end
 
     def all_unread_notifications(destination_id:)
+      # 通常ならば、paginationで、一回取得する件数を限定する
       where(destination_id: destination_id, readed: false)
         .order(created_at: :desc)
         .to_a
     end
 
     def recent_summary(destination_id:, duration: 60 * 5)
+      # 通常ならば、paginationで、一回取得する件数を限定する
       notifications = eager_load(:source)
                         .where(destination_id: destination_id, readed: false, created_at: (Time.zone.now - duration)..Time.zone.now)
                         .order(created_at: :desc)

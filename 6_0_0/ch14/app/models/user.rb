@@ -98,6 +98,8 @@ class User < ApplicationRecord
   def recent_unread_notification_summaries
     summaries = []
     summaries << RelationshipNotification.recent_summary(destination_id: id)
+    # 複数種類の通知がある場合
+    # summaries << OtherNotification.recent_summary(destination_id: id)
     summaries.compact!
     return summaries
   end
