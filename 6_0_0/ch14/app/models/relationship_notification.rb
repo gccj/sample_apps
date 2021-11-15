@@ -13,7 +13,7 @@ class RelationshipNotification < ApplicationRecord
         .to_a
     end
 
-    def recent_summary(destination_id:, duration: 300000 * 5)
+    def recent_summary(destination_id:, duration: 60 * 5)
       notifications = eager_load(:source)
                         .where(destination_id: destination_id, readed: false, created_at: (Time.zone.now - duration)..Time.zone.now)
                         .order(created_at: :desc)
@@ -35,6 +35,10 @@ class RelationshipNotification < ApplicationRecord
 
   def body
     # 通知の本文
+  end
+
+  def source_link
+    # 通知の飛ばす先
   end
 
   def to_s
